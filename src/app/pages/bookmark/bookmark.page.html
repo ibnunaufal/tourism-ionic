@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bookmark</ion-title>
+    <ion-icon name="close-outline" slot="end" style="zoom: 3;" (click)="dismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngFor="let x of arr" (click)="openDetail(x)">
+    <ion-item lines="none">
+      <img src="../{{x.img}}"  alt="">
+      <ion-label> {{ x.name }} </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

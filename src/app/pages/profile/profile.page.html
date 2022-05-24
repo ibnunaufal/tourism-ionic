@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profile</ion-title>
+    <ion-icon name="close-outline" slot="end" style="zoom: 3;" (click)="dismiss()"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <ion-row>
+    <ion-col size="12" style="text-align: center;">
+      <ion-icon name="person-circle-outline" style="zoom: 5;"></ion-icon>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="12">
+      <ion-row>
+        <ion-col size="12">
+          <ion-list>
+            <ion-item lines="none">
+              <ion-label>
+                Nama Pengunjung
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-icon name="mail-outline" slot="start"></ion-icon>
+              <ion-label>
+                Email@Pengunjung
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              <ion-label>
+                Alamat
+              </ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-icon name="bookmark-outline" slot="start"></ion-icon>
+              <ion-label>
+                Bookmark(12)
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label class="ion-text-wrap" lines="none">
+              Ulasan
+              </ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-button (click)="onClick()" expand="block"shape="round">
+            Ubah Profile
+          </ion-button>
+        </ion-col>
+    
+      </ion-row>  
+    </ion-col>
+  </ion-row>
+</ion-content>

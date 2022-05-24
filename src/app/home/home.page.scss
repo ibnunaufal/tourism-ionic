@@ -25,3 +25,45 @@
 #container a {
   text-decoration: none;
 }
+.headIcon{
+  margin-right: 10px;
+  ion-icon{
+    zoom: 1.5;
+    margin: 5px;
+  }
+}
+ion-title{
+  margin-top: 20px;
+  p{
+    margin-top: 0px;
+  }
+}
+.headline{
+  height: 60%;
+  ion-card-header{
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    color: white;
+    --background: linear-gradient(0deg, rgb(0 0 0) 0%, rgb(63 63 63 / 0%) 100%) !important
+  }
+}
+.slideKategori{
+  ion-card{
+    ion-icon{
+      zoom: 5;
+    }
+    text-align: left;
+    width: 200px;
+  }
+}
+.rekomendasi{
+  max-height: 360px;
+  min-height: 350px;
+}
+.swiper-slide img{
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 200px;
+}
