@@ -101,7 +101,7 @@ export class HomePage {
 
   async openCategory(category) {
     const modal = await this.modalController.create({
-    component: SearchPage,
+    component: CategoryPage,
     componentProps: { 
       data: this.listWisata,
       category: category 
