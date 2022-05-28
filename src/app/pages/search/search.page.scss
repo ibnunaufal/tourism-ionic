@@ -1,0 +1,14 @@
+.data{
+    img{
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+    }
+    ion-card-header{
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+        color: white;
+        --background: linear-gradient(0deg, rgb(0 0 0) 0%, rgb(63 63 63 / 0%) 100%) !important
+    }
+}

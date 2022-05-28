@@ -6,10 +6,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-list *ngFor="let x of arr" (click)="openDetail(x)">
+  <ion-list *ngFor="let x of arr">
     <ion-item lines="none">
-      <img src="../{{x.img}}"  alt="">
-      <ion-label> {{ x.name }} </ion-label>
+      <img src="{{ sanitizeImg(x.image) }}" (click)="openDetail(x)"/>
+      <ion-label (click)="openDetail(x)"> {{ x.name }} </ion-label>
+      <ion-icon name="trash-outline" slot="end" (click)="remove(x.id)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>

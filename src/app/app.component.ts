@@ -1,6 +1,6 @@
 
 import { Component, ViewChildren, QueryList, ViewChild } from "@angular/core";
-
+import { Storage } from '@ionic/storage-angular';
 
 
 import {
@@ -28,8 +28,15 @@ export class AppComponent {
     private router: Router,
     private alert: AlertService,
     private location: Location,
+    private storage: Storage
   ) {
     this.backButtonEvent()
+  }
+
+  async ngOnInit() {
+    // If using a custom driver:
+    // await this.storage.defineDriver(MyCustomDriver)
+    await this.storage.create();
   }
 
   backButtonEvent() {

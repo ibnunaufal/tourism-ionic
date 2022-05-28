@@ -6,7 +6,16 @@
 </ion-header>
 
 <ion-content>
-  <img src="../{{arr.img}}" alt="">
+  <ion-slides mode="md" pager="md" scrollbar="md">
+    <ion-slide *ngIf="isLoading">
+      <ion-skeleton-text animated style="width: 100%; height:150px;"></ion-skeleton-text>
+    </ion-slide>
+    <div *ngIf="!isLoading">
+      <ion-slide *ngFor="let img of imgArr">
+        <img src="{{ sanitizeImg(img.image) }}"/>
+      </ion-slide>
+    </div>
+  </ion-slides>
   <ion-row>
     <ion-col size="12">
       <ion-list>
@@ -18,25 +27,86 @@
         <ion-item lines="none">
           <ion-icon name="location-outline" slot="start"></ion-icon>
           <ion-label>
-            {{ arr.alamat }}
+            {{ capitalize(arr.desa + ", " + arr.kecamatan) }} 
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="pricetag-outline" slot="start"></ion-icon>
+          <ion-label >
+            {{ arr.ticket == "0" ? "Gratis" : arr.ticket }}
           </ion-label>
         </ion-item>
         <ion-item lines="none">
           <ion-icon name="time-outline" slot="start"></ion-icon>
-          <ion-label>
-            Buka Setiap Hari
+          <ion-label >
+            {{ arr.seninJumat == "00:00-00:00" ? "24 Jam" : arr.seninJumat }}
           </ion-label>
         </ion-item>
-        <ion-item>
-          <ion-label class="ion-text-wrap" lines="none">
+        <ion-item lines="none">
+          <ion-label class="ion-text-wrap" >
           {{ arr.desc }}
           </ion-label>
         </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="accessibility-outline" slot="start"></ion-icon>
+          <ion-label >
+            {{ arr.disabilities == "1" ? "" : "Tidak " }}Ramah Disabilitas
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="wifi-outline" slot="start"></ion-icon>
+          <ion-label >
+            {{ arr.wifi == "1" ? "" : "Tidak " }}Tersedia Wifi
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-icon name="car-outline" slot="start"></ion-icon>
+          <ion-label >
+            Parkir{{ arr.parkir == "1" ? " " : " Tidak " }}Tersedia
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-button fill="outline" *ngFor="let tag of getTags(arr.tags)">
+            {{ tag }}
+          </ion-button>
+        </ion-item>
       </ion-list>
-      <ion-button (click)="onClick()" expand="block"shape="round">
-        Tombol
+    </ion-col>
+  </ion-row>  
+  <ion-row *ngIf="arr.video">
+    <ion-col size="12">
+      <iframe
+      width="100%"
+      height="315"
+      [src]="getId(arr.video)"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
+      <!-- <iframe
+      width="100%"
+      height="315"
+      [src]="getId('https://www.youtube.com/watch?v=qqBTjQcMeUQ')"
+      frameborder="0"
+      allowfullscreen
+    ></iframe> -->
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col size="10">
+      <ion-button (click)="maps()" expand="block">
+        <a href="{{ arr.mapUrl }}" style="color: white;">Buka di Maps</a>
       </ion-button>
     </ion-col>
-
-  </ion-row>  
-</ion-content>
+    <ion-col size="2">
+      <ion-button (click)="save(true)" *ngIf="!isSaved" expand="block">
+        <ion-icon name="bookmarks-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="save(false)" *ngIf="isSaved" expand="block">
+        <ion-icon name="bookmarks"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  
+</ion-footer>
