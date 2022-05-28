@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { AlertService } from 'src/app/services/alert.service';
 import { environment } from 'src/environments/environment';
@@ -14,10 +15,10 @@ export class BookmarkPage implements OnInit {
   arr;
   apiUrl = environment.API_URL;
   constructor(
-    private navParams: NavParams,
     private modalController: ModalController,
     private storage: Storage,
-    private alert: AlertService
+    private alert: AlertService,
+    private router: Router
   ) {
     // this.arr = this.navParams.get('data');
     this.getBookmark()
@@ -26,6 +27,10 @@ export class BookmarkPage implements OnInit {
 
   ngOnInit(
   ) {
+  }
+
+  search(){
+    this.router.navigate(['/tabs/search'])
   }
 
   getBookmark(){

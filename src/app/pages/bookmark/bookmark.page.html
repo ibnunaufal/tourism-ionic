@@ -1,7 +1,10 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Bookmark</ion-title>
-    <ion-icon name="close-outline" slot="end" style="zoom: 3;" (click)="dismiss()"></ion-icon>
+    <!-- <ion-icon name="close-outline" slot="end" style="zoom: 3;" (click)="dismiss()"></ion-icon> -->
   </ion-toolbar>
 </ion-header>
 
@@ -13,4 +16,19 @@
       <ion-icon name="trash-outline" slot="end" (click)="remove(x.id)"></ion-icon>
     </ion-item>
   </ion-list>
+  <div *ngIf="arr.length == 0" style="height: 100%;">
+    <ion-row style="    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    height: 100%;">
+      <ion-col size="12" style="text-align: center;">
+        <img src="../../../assets/null.svg" alt="">
+        <h3>Bookmark kosong</h3>
+        <ion-button (click)="search()">
+          Tambahkan disini
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>

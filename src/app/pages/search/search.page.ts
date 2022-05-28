@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInfiniteScroll, ModalController } from '@ionic/angular';
+import { IonContent, IonInfiniteScroll, ModalController, Platform } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { environment } from 'src/environments/environment';
@@ -13,32 +13,49 @@ import { DetailPage } from '../detail/detail.page';
 export class SearchPage implements OnInit {
   @ViewChild(IonInfiniteScroll, { static: true })
   infiniteScroll: IonInfiniteScroll;
+
+  @ViewChild(IonContent) content: IonContent;
   
   isLoading = false
-  start = 0;
+  start = 1;
   limit = 5;
   arr;
   kata;
-  apiUrl = environment.API_URL
+  tag;
+  tags;
+  apiUrl = environment.API_URL;
+  backToTop = false;
+  opts = {
+    slidesPerView: 'auto'
+  };
   constructor(
     private dataService: DataService,
     private modalController: ModalController,
-    private alert: AlertService
+    private alert: AlertService,
+    private platform: Platform
   ) {
-    this.getData(this.start, this.limit)
+    this.getData(this.start, this.limit);
+    this.getAllTags();
   }
 
   ngOnInit() {
   }
 
+  getAllTags(){
+    this.dataService.getTags().then((res:any)=>{
+      console.log(res);
+      this.tags = res.body;
+    })
+  }
+
   search(kata){
-    this.start = 0;
+    this.start = 1;
     this.kata = kata
     console.log(this.kata);
     this.isLoading = true
     this.arr = [];
     this.dataService
-      .getPage(this.start, this.limit, kata)
+      .getPage(this.start, this.limit, this.kata, )
       .then((response: any) => {
         this.isLoading = false
         console.log(response);
@@ -55,7 +72,7 @@ export class SearchPage implements OnInit {
     this.isLoading = true
     this.arr = [];
     this.dataService
-      .getPage(start, limit)
+      .getPage(start, limit, this.kata, this.tag)
       .then((response: any) => {
         this.isLoading = false
         console.log(response);
@@ -71,7 +88,7 @@ export class SearchPage implements OnInit {
   loadData(event) {
     this.start += 1;
 
-    this.dataService.getPage(this.start, this.limit).then(
+    this.dataService.getPage(this.start, this.limit, this.kata, this.tag).then(
       (response: any) => {
         for (let ii = 0; ii < response.body.data.length; ii++) {
           this.arr.push(response.body.data[ii]);
@@ -93,12 +110,12 @@ export class SearchPage implements OnInit {
     this.arr = [];
     this.isLoading = true
 
-    this.start = 0;
+    this.start = 1;
 
     this.infiniteScroll.disabled = false;
 
     this.dataService
-      .getPage(this.start, this.limit)
+      .getPage(this.start, this.limit, this.kata, this.tag)
       .then((response: any) => {
         this.isLoading = false
         this.arr = response.body.data;
@@ -127,7 +144,6 @@ export class SearchPage implements OnInit {
     return words.join(" ");
   }
 
-
   async openDetail(x) {
     const modal = await this.modalController.create({
     component: DetailPage,
@@ -136,5 +152,27 @@ export class SearchPage implements OnInit {
     await modal.present();
   }
 
+  getScrollPos(pos: number) {
+    console.log(pos)
+    if (pos > this.platform.height()) {
+         this.backToTop = true;
+    } else {
+         this.backToTop = false;
+    }
+  }
 
+  gotToTop() {
+    this.content.scrollToTop(1000);
+  }
+
+  set(tag){
+    if(tag == this.tag){
+      this.tag = ""
+    }else{
+      this.tag = tag
+    }
+    this.start = 1;
+    this.getData(this.start, this.limit)
+    
+  }
 }

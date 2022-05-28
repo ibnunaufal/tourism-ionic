@@ -22,13 +22,28 @@ export class DataService {
     let url = 'api/reviewbyid?cari='+id;
     return this.http.get(url);
   }
-  getPage(page, limit, cari?){
+  getTags(){
+    let url = 'api/getTags';
+    return this.http.get(url);
+  }
+  getPage(page, limit, cari?, tags?){
     let url = ""
-    if(cari){
-      url = 'api/getpage?page='+page+'&limit='+limit+'&cari='+cari;
-    }else{
-      url = 'api/getpage?page='+page+'&limit='+limit;
+    if(!cari){
+      cari = ""
     }
+    if(!tags){
+      tags = ""
+    }
+    url = 'api/getpage?page='+page+'&limit='+limit+'&cari='+cari+'&tags='+tags;
+    // if(cari){
+    //   if(tags){
+    //     url = 'api/getpage?page='+page+'&limit='+limit+'&cari='+cari;
+    //   }else{
+    //     url = 'api/getpage?page='+page+'&limit='+limit+'&cari='+cari;
+    //   }
+    // }else{
+    //   url = 'api/getpage?page='+page+'&limit='+limit;
+    // }
     return this.http.get(url);
   }
   reviewstore(data){

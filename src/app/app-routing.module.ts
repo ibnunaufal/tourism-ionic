@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'tabs/home',
     pathMatch: 'full'
   },
   {
@@ -23,17 +23,21 @@ const routes: Routes = [
     path: 'profile',
     loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
   },
-  {
-    path: 'bookmark',
-    loadChildren: () => import('./pages/bookmark/bookmark.module').then( m => m.BookmarkPageModule)
-  },
+  // {
+  //   path: 'bookmark',
+  //   loadChildren: () => import('./pages/bookmark/bookmark.module').then( m => m.BookmarkPageModule)
+  // },
   {
     path: 'auth',
     loadChildren: () => import('./pages/auth/auth.module').then( m => m.AuthPageModule)
   },
+  // {
+  //   path: 'search',
+  //   loadChildren: () => import('./pages/search/search.module').then( m => m.SearchPageModule)
+  // },
   {
-    path: 'search',
-    loadChildren: () => import('./pages/search/search.module').then( m => m.SearchPageModule)
+    path: 'tabs',
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
   },
 ];
 
