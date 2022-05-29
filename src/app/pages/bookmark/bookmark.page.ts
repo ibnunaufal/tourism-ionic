@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { AlertService } from 'src/app/services/alert.service';
 import { environment } from 'src/environments/environment';
@@ -18,6 +18,7 @@ export class BookmarkPage implements OnInit {
     private modalController: ModalController,
     private storage: Storage,
     private alert: AlertService,
+    private alertController: AlertController,
     private router: Router
   ) {
     // this.arr = this.navParams.get('data');
@@ -40,6 +41,13 @@ export class BookmarkPage implements OnInit {
     })
   }
 
+  ionViewWillEnter(){
+    console.log('will enter')
+  }
+  ionViewDidEnter(){
+    console.log('did enter')
+    this.getBookmark();
+  }
   dismiss(){
     this.modalController.dismiss();
   }
@@ -73,5 +81,30 @@ export class BookmarkPage implements OnInit {
         });
       }
     })
+  }
+
+  async presentDelete(id, name) {
+    const alert = await this.alertController.create({
+      header: 'Konfirmasi',
+      message: 'Anda yakin akan menghapus '+name+' dari bookmark?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Hapus',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.remove(id)
+          }
+        }
+      ]
+    });
+  
+    await alert.present();
   }
 }

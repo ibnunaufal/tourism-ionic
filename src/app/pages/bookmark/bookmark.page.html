@@ -13,7 +13,7 @@
     <ion-item lines="none">
       <img src="{{ sanitizeImg(x.image) }}" (click)="openDetail(x)"/>
       <ion-label (click)="openDetail(x)"> {{ x.name }} </ion-label>
-      <ion-icon name="trash-outline" slot="end" (click)="remove(x.id)"></ion-icon>
+      <ion-icon name="trash-outline" slot="end" (click)="presentDelete(x.id, x.name)"></ion-icon>
     </ion-item>
   </ion-list>
   <div *ngIf="arr.length == 0" style="height: 100%;">

@@ -118,6 +118,6 @@ export class HomePage {
   }
 
   showAll(){
-    this.router.navigate(['/search'])
+    this.router.navigate(['/tabs/search'])
   }
 }

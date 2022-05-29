@@ -52,7 +52,7 @@
           <ion-icon name="bed-outline" style="zoom: 2;" *ngIf="i != 2 && i != 1 && i != 0"></ion-icon>
           <p style="margin: 0px;">{{ cat.name }}</p>
         </ion-col>
-        <ion-col size="4">
+        <ion-col size="4" (click)="showAll()">
           <ion-icon name="arrow-forward-outline" style="zoom: 2;"></ion-icon>
           <p style="margin: 0px;">Lainnya</p>
         </ion-col>
