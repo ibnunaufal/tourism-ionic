@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { AlertController, ModalController, NavParams } from '@ionic/angular';
 import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { environment } from 'src/environments/environment';
 import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 import { Storage } from '@ionic/storage-angular';
+import { LoadingService } from 'src/app/services/loading.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-detail',
@@ -16,6 +18,8 @@ export class DetailPage implements OnInit {
   arr;
   imgArr;
   isLoading;
+  reviews;
+  profile;
   isSaved = false;
   apiUrl = environment.API_URL
   constructor(
@@ -24,10 +28,15 @@ export class DetailPage implements OnInit {
     private dataService: DataService,
     private domSanitizer: DomSanitizer,
     private storage: Storage,
-    private alert: AlertService
+    private router: Router,
+    private alert: AlertService,
+    private loading: LoadingService,
+    private alertController: AlertController
   ) {
     this.arr = this.navParams.get('data');
     this.getImage()
+    this.getReview()
+    this.getProfile();
     this.saved()
     console.log(this.arr)
    }
@@ -64,6 +73,12 @@ export class DetailPage implements OnInit {
     return sanitize;
   }
 
+  getProfile(){
+    this.storage.get('data').then((res:any) => {
+      this.profile = res
+    })
+  }
+
   getImage(){
     this.isLoading = true;
     this.dataService.getAllImage(this.arr.id).then((res:any) => {
@@ -87,6 +102,97 @@ export class DetailPage implements OnInit {
     let temp = string.replace(" ","")
     const words = temp.split(",");
     return words
+  }
+
+  getReview(){
+    this.dataService.getAllReview(this.arr.id).then((res:any) => {
+      console.log(res)
+      this.reviews = res.body
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
+  async presentAlertReview(name) {
+    if(this.profile){
+      const alert = await this.alertController.create({
+        header: 'Tambahkan Review',
+        mode: 'ios',
+        message: 'Masukkan review dan nilai untuk '+name,
+        inputs: [
+          {
+            type: 'textarea',
+            name: 'message',
+            placeholder: 'Masukkan Review'
+          },
+          {
+            type: 'number',
+            name: 'vote',
+            placeholder: 'Masukkan Nilai 1-10'
+          }
+        ],
+        buttons: [
+          {
+            text: 'Batal',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Tambah',
+            handler: (alert) => {
+              let data = {
+                name: this.profile.name,
+                email: this.profile.email,
+                id: this.arr.id,
+                message: alert.message,
+                vote: alert.vote
+              }
+              this.loading.show()
+              this.dataService.reviewstore(data).then((res:any)=>{
+                this.loading.hide()
+                this.alert.toastSuccess("Berhasil menambah review")
+                this.getReview()
+              }).catch((err) => {
+                this.loading.hide()
+                this.alert.toastError(err);
+              })
+              console.log('Confirm Okay '+alert);
+            }
+          }
+        ]
+      });
+      await alert.present();
+    }else{
+      const alert = await this.alertController.create({
+        header: 'Tambah Review',
+        mode: 'ios',
+        message: 'Anda harus login untuk menambahkan review',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel: blah');
+            }
+          }, {
+            text: 'Login',
+            handler: () => {
+              this.router.navigate(['/auth']);
+              console.log('Confirm Okay');
+            }
+          }
+        ]
+      });
+      alert.onDidDismiss().then((res) => {
+        if(!this.profile){
+          this.modalController.dismiss()
+        }
+      })
+      await alert.present();
+      
+    }
   }
 
   saved(){

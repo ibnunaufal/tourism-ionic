@@ -36,10 +36,34 @@ export class HttpService {
     });
   }
 
+
+  auth(url) {
+    let headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      "Application": "application/json",
+    });
+    return new Promise((resolve, reject) => {
+      const httpOptions = {
+        headers: headers,
+        observe: 'response' as 'response'
+      };
+      this.http
+        .get(environment.API_URL + url, httpOptions)
+        .pipe(
+          timeout(environment.TIMEOUT),
+          catchError(this.error.handleError)
+        )
+        .subscribe((response: any) => {
+          resolve(response);
+        }, reject);
+    });
+  }
+
   post(url, data) {
     let headers = new HttpHeaders({
       "Content-Type": "application/json",
       "Application": "application/json",
+      "Accept": "application/json"
     });
     return new Promise((resolve, reject) => {
       const httpOptions = {

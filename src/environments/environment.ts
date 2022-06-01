@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   API_URL: "https://salatigatourism.com/",
-  TIMEOUT: 5000
+  TIMEOUT: 10000
 };
 
 /*

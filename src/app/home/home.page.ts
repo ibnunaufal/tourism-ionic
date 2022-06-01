@@ -87,6 +87,13 @@ export class HomePage {
     });
     await modal.present();
   }
+  async openDetailAcara(x) {
+    const modal = await this.modalController.create({
+    component: DetailPage,
+    componentProps: { data: x }
+    });
+    await modal.present();
+  }
 
 
   async openBookmark() {
@@ -119,5 +126,8 @@ export class HomePage {
 
   showAll(){
     this.router.navigate(['/tabs/search'])
+  }
+  showAcara(){
+    this.router.navigate(['/acara'])
   }
 }

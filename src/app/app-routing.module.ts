@@ -39,6 +39,18 @@ const routes: Routes = [
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
   },
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/auth/login/login.module').then( m => m.LoginPageModule)
+  },
+  {
+    path: 'acara',
+    loadChildren: () => import('./pages/acara/acara.module').then( m => m.AcaraPageModule)
+  },
+  {
+    path: 'acara-detail',
+    loadChildren: () => import('./pages/acara-detail/acara-detail.module').then( m => m.AcaraDetailPageModule)
+  },
 ];
 
 @NgModule({

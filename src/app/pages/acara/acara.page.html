@@ -1,0 +1,72 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Acara</ion-title>
+  </ion-toolbar>
+  <ion-row>
+    <ion-col>
+      <ion-searchbar placeholder="Cari disini" enterKeyHint="Cari" inputmode="text" (search)="search($event.target.value)" (ionClear)="search('')"></ion-searchbar>
+      <!-- <div style="overflow-x: scroll;
+      overflow-y: hidden;
+      white-space: nowrap;">
+        <div *ngFor="let t of tags" style="display: inline-block;margin: 0px 2px;">
+          <ion-button (click)="set(t.name)" expand="block" fill="{{ tag == t.name ? 'solid' : 'outline'}}">
+            {{ t.name }}
+          </ion-button>
+        </div>
+      </div> -->
+    </ion-col>
+  </ion-row>
+</ion-header>
+
+<ion-content overflow-scroll=“true” [scrollEvents]="true" (ionScroll)="getScrollPos($event.detail.scrollTop)">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <div *ngIf="!isLoading" style="height: 100%;">
+    <ion-card *ngFor="let x of arr" class="data">
+      <img src="{{ sanitizeImg(x.image) }}" (click)="openDetail(x)"/>
+      <ion-card-header>
+        <ion-card-title>{{ x.name }}</ion-card-title>
+        <ion-card-subtitle style="margin: 0px;"> {{ capitalize(x.desa + ", " + x.kecamatan) }} 
+          <!-- <p style="margin: 0px;
+          position: absolute;
+          right: 0px;
+          top: 0px;"> {{ x.tags }} </p> -->
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+    <div *ngIf="arr.length == 0" style="height: 100%;">
+      <ion-row style="    display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;
+      height: 100%;">
+        <ion-col size="12" style="text-align: center;">
+          <img src="../../../assets/notfound.svg" alt="">
+          <h3>Data tidak ditemukan</h3>
+          <p>Coba gunakan kata kunci lainnya</p>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+  <div *ngIf="isLoading">
+    <ion-card *ngFor="let x of [0,1,2,3]" class="data">
+      <ion-skeleton-text animated style="width: 100%;height: 200px;"></ion-skeleton-text>
+    </ion-card>
+  </div>
+  <!-- fab placed to the bottom end -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="backToTop">
+    <ion-fab-button (click)="gotToTop()" style="width: 45px;height: 45px;">
+      <ion-icon name="chevron-up-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Mengambil data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

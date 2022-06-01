@@ -103,6 +103,39 @@
       </ion-slides> -->
     </ion-col>
   </ion-row>
+  <ion-row>
+    <ion-title size="large">
+      Acara
+      <p class="showAll" (click)="showAcara()">Lihat Semua</p>
+    </ion-title>
+    <ion-col size="12">
+      <ion-slides [options]="tempatOpts" *ngIf="!isLoading">
+        <ion-slide *ngFor="let t of acara" class="rekomendasi" (click)="openDetailAcara(t)">
+          <ion-card class="headline">
+            <img src="{{ apiUrl + 'img/acara/' + t.image }}"/>
+            <ion-card-header>
+              <ion-card-title> {{ t.name }} </ion-card-title>
+              <ion-card-subtitle> {{ capitalize(t.desa + ", " + t.kecamatan) }} </ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+      <div *ngIf="isLoading" class="headlineLoading">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+      <!-- <ion-slides mode="md" pager="md" scrollbar="md">
+        <ion-slide *ngFor="let x of listWisata" class="rekomendasi" (click)="openDetail(x)">
+          <ion-card class="headline">
+            <img [src]="x.img" alt="">
+            <ion-card-header>
+              <ion-card-title> {{ x.name }} </ion-card-title>
+              <ion-card-subtitle> {{x.alamat}} </ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-slide>
+      </ion-slides> -->
+    </ion-col>
+  </ion-row>
   <!-- <div id="container">
     <strong>Ready to create an app?</strong>
     <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
