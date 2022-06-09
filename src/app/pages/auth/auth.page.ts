@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
+import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { LoadingService } from 'src/app/services/loading.service';
 
@@ -21,6 +22,7 @@ export class AuthPage implements OnInit {
     private dataService: DataService,
     private alertController: AlertController,
     private router: Router,
+    private alert: AlertService,
     private loading: LoadingService,
     private storage: Storage
   ) { }
@@ -50,7 +52,7 @@ export class AuthPage implements OnInit {
   submit(){
     console.log('df')
     if(this.isRegistered){
-      // login
+      // 
       console.log('asa')
       let d = {
         name: this.name,
@@ -60,13 +62,15 @@ export class AuthPage implements OnInit {
       this.loading.show()
       this.dataService.register(d).then((res:any) =>{
         this.loading.hide()
+        this.alert.toastSuccess('Akun berhasil didaftarkan, silahkan login kembali')
         console.log(res)
       }).catch((err) => {
         this.loading.hide()
+        this.alert.toastError(err)
         console.log(err)
       })
     }else{
-      //register
+      // 
       console.log('as')
       let d = {
         email: this.email,
@@ -81,6 +85,7 @@ export class AuthPage implements OnInit {
         })
       }).catch((err) => {
         this.loading.hide()
+        this.alert.toastError(err)
         console.log(err)
       })
     }

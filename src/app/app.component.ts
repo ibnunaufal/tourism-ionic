@@ -7,6 +7,8 @@ import {
   Platform,
   IonRouterOutlet,
   ModalController,
+  NavController,
+  AlertController,
 } from "@ionic/angular";
 import { NavigationEnd, Router, RouterOutlet } from "@angular/router";
 import { AlertService } from "./services/alert.service";
@@ -28,9 +30,41 @@ export class AppComponent {
     private router: Router,
     private alert: AlertService,
     private location: Location,
+    private navCtrl: NavController,
+    private alertController: AlertController,
     private storage: Storage
   ) {
-    this.backButtonEvent()
+    // this.initializeApp();
+    // this.backButtonEvent()
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      console.log('Handler was called!');
+      // alert.toastSuccess('handler')
+    });
+    this.platform.ready().then(() => {
+      this.platform.backButton.subscribeWithPriority(0,async() => {
+        // this.alert.toastSuccess("cek")
+        if (this.modalController.getTop()) {
+          const modal = await this.modalController.getTop();
+          console.log(modal)
+          if (modal) { 
+            this.modalController.dismiss();
+            return;
+          }else {
+            if (this.router.url=="/tabs/home" || this.router.url=="/tabs/search" || this.router.url=="/tabs/bookmark" || this.router.url=="/tabs/profile") {
+              navigator['app'].exitApp();
+            } else {
+              this.navCtrl.pop();
+            }
+          }
+        } else {
+          if (this.router.url=="/tabs/home" || this.router.url=="/tabs/search" || this.router.url=="/tabs/bookmark" || this.router.url=="/tabs/profile") {
+            navigator['app'].exitApp();
+          } else {
+            this.navCtrl.pop();
+          }
+        } 
+      });
+    })
   }
 
   async ngOnInit() {
@@ -77,6 +111,62 @@ export class AppComponent {
 
       this.lastTimeBackPress = new Date().getTime();
     }
+  }
+
+  initializeApp() {
+
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      console.log('Back press handler!');
+      if (this.location.isCurrentPathEqualTo('/tabs/home')) {
+
+        // Show Exit Alert!
+        console.log('Show Exit Alert!');
+        this.showExitConfirm();
+        processNextHandler();
+      } else {
+
+        // Navigate to back page
+        console.log('Navigate to back page');
+        this.location.back();
+
+      }
+
+    });
+
+    this.platform.backButton.subscribeWithPriority(5, () => {
+      console.log('Handler called to force close!');
+      this.alertController.getTop().then(r => {
+        if (r) {
+          navigator['app'].exitApp();
+        }
+      }).catch(e => {
+        console.log(e);
+      })
+    });
+
+  }
+
+  showExitConfirm() {
+    this.alertController.create({
+      header: 'App termination',
+      message: 'Do you want to close the app?',
+      backdropDismiss: false,
+      buttons: [{
+        text: 'Stay',
+        role: 'cancel',
+        handler: () => {
+          console.log('Application exit prevented!');
+        }
+      }, {
+        text: 'Exit',
+        handler: () => {
+          navigator['app'].exitApp();
+        }
+      }]
+    })
+      .then(alert => {
+        alert.present();
+      });
   }
 
 }
