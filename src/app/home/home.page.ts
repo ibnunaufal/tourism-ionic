@@ -19,10 +19,10 @@ export class HomePage {
 
   @ViewChild('sliderHeadline', { static: false }) sliderHeadline: IonSlides;
   headlineOpts = {
-    slidesPerView: 1,
-    loop: true,
-    autoPlay: true,
-    speed: 400
+    slidesPerView: 1.5,
+    // loop: true,
+    // autoPlay: true,
+    // speed: 400
   };
 
   
@@ -32,6 +32,7 @@ export class HomePage {
   tempat;
   categories;
   isLoading = false;
+  tags
   constructor(
     private modalController: ModalController,
     private dataService: DataService,
@@ -42,11 +43,22 @@ export class HomePage {
   }
 
   start(){
-    this.sliderHeadline.startAutoplay();
+    // this.sliderHeadline.startAutoplay();
+  }
+  getAllTags(){
+    this.dataService.getTags().then((res:any)=>{
+      console.log(res);
+      let temp = res.body;
+      this.tags = []
+      for (let i = 0; i < 3; i++) {
+        this.tags.push(temp[i])
+      }
+    })
   }
 
   getInit(){
     this.isLoading = true
+    this.getAllTags()
     this.dataService.getHeadline().then((res:any) => {
       console.log(res)
       this.isLoading = false;

@@ -33,18 +33,26 @@
   }
 }
 ion-title{
+  margin: 5px 0px;
   p{
     margin-top: 0px;
   }
 }
 .headline{
   height: 60%;
+  border-radius: 20px;
   ion-card-header{
     width: 100%;
     position: absolute;
     bottom: 0px;
     color: white;
-    --background: linear-gradient(0deg, rgb(0 0 0) 0%, rgb(63 63 63 / 0%) 100%) !important
+    --background: linear-gradient(0deg, rgb(0 0 0) 0%, rgb(63 63 63 / 0%) 100%) !important;
+    ion-card-title{
+      color: white;
+    }
+    ion-card-subtitle{
+      color: white;
+    }
   }
 }
 .slideKategori{
@@ -63,8 +71,10 @@ ion-title{
 .swiper-slide img{
   width: auto;
   max-width: 100%;
-  height: auto;
-  max-height: 200px;
+  // height: auto;
+  height: 350px;
+  object-fit: cover;
+  // max-height: 200px;
 }
 
 .showAll{
@@ -72,6 +82,7 @@ ion-title{
   right: 16px;
   top: 8px;
   font-size: 12px;
+  color: var(--ion-color-primary);
 }
 .headlineLoading{
   margin: 0px 20px;
@@ -79,4 +90,22 @@ ion-title{
     width: 100%;
     height: 175px;
   }
+}
+.top-row{
+  padding-top: 10px;
+}
+.top-right{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    height: 40px;
+  }
+}
+.top-left{
+  text-align: left;
+  padding-left: 20px;
+}
+.row-content{
+  margin: 20px 0px;
 }

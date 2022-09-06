@@ -1,30 +1,105 @@
-<ion-header [translucent]="true">
+<!-- <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
       Dolan Salatiga
-      <!-- <p>Pengunjung</p> -->
+      <p>Pengunjung</p>
     </ion-title>
     <div slot="end" class="headIcon">
-      <!-- <ion-icon name="bookmark-outline" slot="end" (click)="openBookmark()" ></ion-icon> -->
-      <!-- <ion-icon name="person-circle-outline" (click)="openProfile()"></ion-icon> -->
+      <ion-icon name="bookmark-outline" slot="end" (click)="openBookmark()" ></ion-icon> -->
+      <!-- <ion-icon name="person-circle-outline" (click)="openProfile()"></ion-icon>
     </div>
   </ion-toolbar>
-</ion-header>
+</ion-header> -->
 
 <ion-content [fullscreen]="true">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  <ion-row class="top-row">
+    <ion-col size="10" class="top-left">
+      <h1 class="bold">Dolan Salatiga</h1>
+    </ion-col>
+    <ion-col size="2" class="top-right">
+      <img src="../../assets/logo-salatiga.png" alt="">
+    </ion-col>
+  </ion-row>
   <!-- <ion-row>
-    <ion-col>
-      <ion-searchbar placeholder="Apa yang anda cari?"></ion-searchbar>
+    <ion-col size="12">
+      <div style="overflow-x: scroll;
+      overflow-y: hidden;
+      white-space: nowrap;">
+        <div *ngFor="let t of tags" style="display: inline-block;margin: 0px 2px;">
+          <ion-button (click)="set(t.name)" expand="block" fill="{{ tag == t.name ? 'solid' : 'outline'}}">
+            {{ t.name }}
+          </ion-button>
+        </div>
+      </div>
     </ion-col>
   </ion-row> -->
-  <ion-row>
+  <ion-row class="row-content">
     <ion-col size="12">
-      <!-- <ion-title size="large">
-        Headline
-      </ion-title> -->
+      <ion-slides [options]="headlineOpts" *ngIf="!isLoading" #sliderHeadline (ionSlidesDidLoad)="start()">
+        <ion-slide *ngFor="let h of headline">
+          <ion-card class="headline">
+            <img src="{{ apiUrl + 'img/headline/' + h.image }}"/>
+            <ion-card-header>
+              <ion-card-title class="bold"> {{ h.title }} </ion-card-title>
+              <ion-card-subtitle> {{ h.subtitle }} </ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+      <div *ngIf="isLoading" class="headlineLoading">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="row-content">
+    <ion-title size="large" class="bold">
+      Rekomendasi
+      <p class="showAll reguler" (click)="showAll()" >Lihat Semua ></p>
+    </ion-title>
+    <ion-col size="12">
+      <ion-slides [options]="headlineOpts" *ngIf="!isLoading">
+        <ion-slide *ngFor="let t of tempat" class="rekomendasi" (click)="openDetail(t)">
+          <ion-card class="headline">
+            <img src="{{ apiUrl + 'img/tempat/' + t.image }}"/>
+            <ion-card-header>
+              <ion-card-title class="bold"> {{ t.name }} </ion-card-title>
+              <ion-card-subtitle> {{ capitalize(t.desa + ", " + t.kecamatan) }} </ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+      <div *ngIf="isLoading" class="headlineLoading">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row class="row-content">
+    <ion-title size="large" class="bold">
+      Acara
+      <p class="showAll reguler" (click)="showAcara()">Lihat Semua > </p>
+    </ion-title>
+    <ion-col size="12">
+      <ion-slides [options]="headlineOpts" *ngIf="!isLoading">
+        <ion-slide *ngFor="let t of acara" class="rekomendasi" (click)="openDetailAcara(t)">
+          <ion-card class="headline">
+            <img src="{{ apiUrl + 'img/acara/' + t.image }}"/>
+            <ion-card-header>
+              <ion-card-title class="bold"> {{ t.name }} </ion-card-title>
+              <ion-card-subtitle> {{ capitalize(t.desa + ", " + t.kecamatan) }} </ion-card-subtitle>
+            </ion-card-header>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+      <div *ngIf="isLoading" class="headlineLoading">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </div>
+    </ion-col>
+  </ion-row>
+  <!-- <ion-row>
+    <ion-col size="12">
       <ion-slides [options]="headlineOpts" *ngIf="!isLoading" #sliderHeadline (ionSlidesDidLoad)="start()">
         <ion-slide *ngFor="let h of headline">
           <ion-card class="headline">
@@ -57,17 +132,6 @@
           <p style="margin: 0px;">Lainnya</p>
         </ion-col>
       </ion-row>
-      <!-- <ion-slides mode="md" pager="false" slidesPerView="1.3" [options]="slideOpts" #sliderHeadline>
-        <ion-slide class="slideKategori" *ngFor="let z of listKategori">
-          <ion-card (click)="openCategory(z.name)">
-            <ion-card-header>
-              <ion-icon name="{{z.icon}}"></ion-icon>
-              <ion-card-title>{{ z.name }}</ion-card-title>
-              <ion-card-subtitle>{{ z.desc }}</ion-card-subtitle>
-            </ion-card-header>
-          </ion-card>
-        </ion-slide>
-      </ion-slides> -->
     </ion-col>
   </ion-row>
   <ion-row>
@@ -90,17 +154,6 @@
       <div *ngIf="isLoading" class="headlineLoading">
         <ion-skeleton-text animated></ion-skeleton-text>
       </div>
-      <!-- <ion-slides mode="md" pager="md" scrollbar="md">
-        <ion-slide *ngFor="let x of listWisata" class="rekomendasi" (click)="openDetail(x)">
-          <ion-card class="headline">
-            <img [src]="x.img" alt="">
-            <ion-card-header>
-              <ion-card-title> {{ x.name }} </ion-card-title>
-              <ion-card-subtitle> {{x.alamat}} </ion-card-subtitle>
-            </ion-card-header>
-          </ion-card>
-        </ion-slide>
-      </ion-slides> -->
     </ion-col>
   </ion-row>
   <ion-row>
@@ -123,19 +176,8 @@
       <div *ngIf="isLoading" class="headlineLoading">
         <ion-skeleton-text animated></ion-skeleton-text>
       </div>
-      <!-- <ion-slides mode="md" pager="md" scrollbar="md">
-        <ion-slide *ngFor="let x of listWisata" class="rekomendasi" (click)="openDetail(x)">
-          <ion-card class="headline">
-            <img [src]="x.img" alt="">
-            <ion-card-header>
-              <ion-card-title> {{ x.name }} </ion-card-title>
-              <ion-card-subtitle> {{x.alamat}} </ion-card-subtitle>
-            </ion-card-header>
-          </ion-card>
-        </ion-slide>
-      </ion-slides> -->
     </ion-col>
-  </ion-row>
+  </ion-row> -->
   <!-- <div id="container">
     <strong>Ready to create an app?</strong>
     <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>

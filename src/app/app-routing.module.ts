@@ -51,6 +51,10 @@ const routes: Routes = [
     path: 'acara-detail',
     loadChildren: () => import('./pages/acara-detail/acara-detail.module').then( m => m.AcaraDetailPageModule)
   },
+  {
+    path: 'intro',
+    loadChildren: () => import('./pages/intro/intro.module').then( m => m.IntroPageModule)
+  },
 ];
 
 @NgModule({

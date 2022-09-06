@@ -1,0 +1,27 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>intro</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-content>
+  <div class="content">
+    <ion-slides mode="ios" pager="ios">
+      <ion-slide *ngFor="let h of headlines">
+        <div>
+          <ion-row class="top">
+            <ion-col size="12">
+              <img src="../../../assets/bg_login.jpg" alt="">
+              <h1>{{ h.title }}</h1>
+            </ion-col>
+          </ion-row>
+          <ion-row class="bottom">
+            <ion-col size="12">
+              <h1>Cooon</h1>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </div>
+</ion-content>

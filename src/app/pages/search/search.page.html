@@ -27,18 +27,23 @@
   </ion-refresher>
   
   <div *ngIf="!isLoading" style="height: 100%;">
-    <ion-card *ngFor="let x of arr" class="data">
-      <img src="{{ sanitizeImg(x.image) }}" (click)="openDetail(x)"/>
-      <ion-card-header>
-        <ion-card-title>{{ x.name }}</ion-card-title>
-        <ion-card-subtitle style="margin: 0px;"> {{ capitalize(x.desa + ", " + x.kecamatan) }} 
-          <p style="margin: 0px;
-          position: absolute;
-          right: 0px;
-          top: 0px;"> {{ x.tags }} </p>
-        </ion-card-subtitle>
-      </ion-card-header>
-    </ion-card>
+    <ion-row>
+      <ion-col size="6" *ngFor="let x of arr">
+        <div class="data">
+          <img src="{{ sanitizeImg(x.image) }}" (click)="openDetail(x)"/>
+          <div class="data-header">
+            <div class="bold data-title">{{ x.name }}</div>
+            <div class="subtitle" style="margin: 0px;"> {{ capitalize(x.desa + ", " + x.kecamatan) }} 
+              <!-- <p style="margin: 0px;
+              position: absolute;
+              right: 0px;
+              top: 0px;"> {{ x.tags }} </p> -->
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+    
     <div *ngIf="arr.length == 0" style="height: 100%;">
       <ion-row style="    display: flex;
       align-content: center;

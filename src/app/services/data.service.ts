@@ -14,6 +14,10 @@ export class DataService {
     let url = 'api/mobilehome'
     return this.http.get(url);
   }
+  getIntroHeadline(){
+    let url = 'api/getHeadline'
+    return this.http.get(url);
+  }
   getAllImage(id){
     let url = 'api/imagebyid?cari='+id;
     return this.http.get(url);

@@ -18,7 +18,7 @@ export class SearchPage implements OnInit {
   
   isLoading = false
   start = 1;
-  limit = 5;
+  limit = 10;
   arr;
   kata;
   tag;
